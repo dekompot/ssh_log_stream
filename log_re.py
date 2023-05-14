@@ -41,7 +41,7 @@ def match_log(log):
     return None if log_grp is None else [get_datetime(log_grp.groups()[:5])] + list(log_grp.groups()[5:])
 
 
-def match_password_pattern(pattern,log):
+def match_password_pattern(pattern, log):
     pattern_grp = pattern.search(log)
     return None if pattern_grp is None else [get_datetime(pattern_grp.groups()[:5])] + [pattern_grp.groups()[5]] + \
                                             [pattern_grp.groups()[6].split()[-1]] + [(pattern_grp.groups()[7])]

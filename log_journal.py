@@ -1,7 +1,7 @@
 from datetime import datetime
 from ipaddress import IPv4Address
 
-import source.log_factory
+from source.log_factory import *
 import source.log_re
 
 
@@ -35,23 +35,24 @@ class SSHLogJournal:
         if source.log_re.match_log(log_string):
             log_entry = SSHLogJournal.get_log(log_string)
             self.logs.append(log_entry)
-        else:
-            raise TypeError(f"Incorrect log: {log_string}")
+
+    def empty(self):
+        self.logs = []
 
     @staticmethod
-    def create_log(log_string, creator: source.log_factory.Log_Creator):
-        return creator.create_log(creator, log_string=log_string)
+    def create_log(log_string, creator: Log_Creator):
+        return creator.create_log(creator,log_string=log_string)
 
     @staticmethod
     def get_log(log_string):
         if source.log_re.match_failed_password(log_string):
-            return SSHLogJournal.create_log(log_string, source.log_factory.Log_Creator_Failed_Password)
+            return SSHLogJournal.create_log(log_string, Log_Creator_Failed_Password)
         elif source.log_re.match_accepted_password(log_string):
-            return SSHLogJournal.create_log(log_string, source.log_factory.Log_Creator_Accepted_Password)
+            return SSHLogJournal.create_log(log_string, Log_Creator_Accepted_Password)
         elif source.log_re.match_error(log_string):
-            return SSHLogJournal.create_log(log_string, source.log_factory.Log_Creator_Error)
+            return SSHLogJournal.create_log(log_string, Log_Creator_Error)
         elif source.log_re.match_log(log_string):
-            return SSHLogJournal.create_log(log_string, source.log_factory.Log_Creator_Other)
+            return SSHLogJournal.create_log(log_string, Log_Creator_Other)
         else:
             raise ValueError(f"Incorrect log (SHOULD NOT HAVE GOTTEN HERE): {log_string}")
 

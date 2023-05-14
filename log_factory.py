@@ -18,7 +18,7 @@ class Log_Creator_Failed_Password(Log_Creator):
 
 class Log_Creator_Accepted_Password(Log_Creator):
     def create_log(self, log_string) -> SSHLogEntry:
-        groups = log_re.match_failed_password(log_string)
+        groups = log_re.match_accepted_password(log_string)
         return SSHLogAcceptedPassword(log_string, groups[0], groups[1], groups[3], hostname=groups[2])
 
 
