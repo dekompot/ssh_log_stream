@@ -3,7 +3,7 @@ from ipaddress import IPv4Address
 
 from source.log_factory import *
 import source.log_re
-from typing import List, Iterator, Dict, Optional, Type, Any
+from typing import List, Iterator, Dict, Optional, Union
 
 
 class SSHLogJournal:
@@ -22,7 +22,8 @@ class SSHLogJournal:
     def __getitem__(self, item: int) -> SSHLogEntry:
         return self.logs[item]
 
-    def __getattr__(self, name: str) -> Dict:
+    def __getattr__(self, name: str) -> Union[Dict[IPv4Address, List[SSHLogEntry]],
+    Dict[datetime, List[SSHLogEntry]], Dict[str, List[SSHLogEntry]]]:
         if name == 'ip':
             return self.get_by_ip()
         elif name == 'date':
