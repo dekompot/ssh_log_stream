@@ -46,13 +46,13 @@ class SSHLogJournal:
     @staticmethod
     def get_log(log_string: str) -> SSHLogEntry:
         if source.log_re.match_failed_password(log_string):
-            return create_log(log_string, Log_Creator_Failed_Password)
+            return create_log_factory(log_string, Log_Creator_Failed_Password)
         elif source.log_re.match_accepted_password(log_string):
-            return create_log(log_string, Log_Creator_Accepted_Password)
+            return create_log_factory(log_string, Log_Creator_Accepted_Password)
         elif source.log_re.match_error(log_string):
-            return create_log(log_string, Log_Creator_Error)
+            return create_log_factory(log_string, Log_Creator_Error)
         elif source.log_re.match_log(log_string):
-            return create_log(log_string, Log_Creator_Other)
+            return create_log_factory(log_string, Log_Creator_Other)
         else:
             raise ValueError(f"Incorrect log (SHOULD NOT HAVE GOTTEN HERE): {log_string}")
 
@@ -84,7 +84,7 @@ class SSHLogJournal:
                            filter(lambda log: lower_limit <= log.date_and_time, self.logs)))
 
 
-def create_log(log_string, creator):
+def create_log_factory(log_string, creator):
     return creator.create_log(creator, log_string)
 
 
