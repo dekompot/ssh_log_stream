@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import Type
 
+import source.log_class
 from source import log_re
 from source.log_class import SSHLogEntry, SSHLogFailedPassword, SSHLogAcceptedPassword, SSHLogError, SSHLogOther
 
